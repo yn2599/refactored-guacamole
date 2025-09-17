@@ -1,0 +1,452 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Sorteador de Números — Numbers</title>
+  <style>
+    :root{
+      --bg:#0b0b0d;
+      --panel:#141419;
+      --muted:#9ca3af;
+      --text:#f4f4f5;
+      --accent:#a78bfa; /* roxo */
+      --accent-2:#8b5cf6;
+      --border:#24242c;
+      --btn:#24222b;
+      --btn-hover:#8b5cf6;
+      --radius:14px;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0; font-family:Inter,system-ui,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
+      color:var(--text); background:var(--bg);
+      -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;
+    }
+
+    /* ====== Layout ====== */
+    .shell{
+      max-width:1280px; margin-inline:auto; padding:28px clamp(16px,4vw,40px);
+      display:grid; grid-template-columns: 1.2fr 1fr; gap:48px;
+    }
+    header{
+      grid-column:1 / -1; display:flex; align-items:center; gap:12px; margin-bottom:8px;margin-top: 44px; 
+      opacity:.95; letter-spacing:.4px; font-weight:700;
+    }
+    .logo-dot{width:28px;height:28px;border-radius:50%; position:relative}
+    .logo-dot:before,.logo-dot:after{content:""; position:absolute; inset:8px; border-radius:50%; border:2px solid #fff; opacity:.8}
+    .brand{font-size:22px}
+
+    /* lado esquerdo */
+    .hero h1{
+      font-size: clamp(38px,6.8vw,86px);
+      line-height:.95; margin:28px 0 6px;
+      letter-spacing:.6px; font-weight:900;
+    }
+    .tagline{ color:#cbd5e1; font-size:14px; letter-spacing:.12em }
+
+    /* .faq{
+      display:grid; gap:18px; margin-top:36px; border-top:1px solid var(--border); padding-top:24px;
+      color:#d1d5db; font-size:15px;
+    } */
+    .faq h3{ margin:0 0 6px; font-size:20px; color:#a78bfa; margin-top: 38px; }
+
+  /* container da FAQ */
+.faq {
+  display: grid;
+  gap: 36px;                 /* espaço entre os blocos */
+  margin-top: 40px;
+}
+
+/* linha: ícone + textos */
+.faq__item {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;                 /* distância do ícone pro texto */
+}
+
+/* ícone roxinho */
+.faq__icon {
+  width: 34px;
+  flex: 0 0 34px;  
+  margin-top: 38px;        /* desce 1 pouquinho pra alinhar com o título */
+}
+
+/* Título roxo, grande e forte */
+.faq__content h3 {
+  color: #c084fc;            /* roxinho (ajuste se quiser) */
+  font-size: clamp(20px, 2.6vw, 20px);
+}
+
+/* Parágrafo em branco/cinza com bom espaçamento */
+.faq__content p {
+  margin: 0;
+  color: #e5e5e5;            /* quase branco (ajuste ao seu tema) */
+  font-size: clamp(16px, 1.8vw, 16px);
+  line-height: 1.65;
+  max-width: 980px;          /* mantém a linha agradável em desktop */
+}
+
+/* Responsivo: aproxima um pouquinho no mobile */
+@media (max-width: 590px) {
+  /* .faq {
+    gap: 28px;
+  }
+  .faq__item {
+    gap: 14px;
+  }
+  .faq__icon {
+    width: 28px;
+    height: 28px;
+    margin-top: 6px;
+  } */
+}
+
+/* Centralizar header + hero no mobile */
+@media (max-width: 590px) {
+  .faq {
+    gap: 28px;
+  }
+  .faq__item {
+    gap: 14px;
+  }
+  .faq__icon {
+    width: 28px;
+    height: 28px;
+    margin-top: 38px;
+  }
+  /* linha do logo/brand */
+  .brand,
+  .header,
+  .site-header {
+    display: flex;
+    align-items: center;
+    justify-content: center;   /* centraliza a linha do logo */
+    text-align: center;
+  }
+
+  
+  header {
+    display: flex;              
+    align-items: center;
+    justify-content: center;   
+    text-align: center; 
+    margin-top: 44px;        
+  }
+
+  /* Se a marca tiver algum empurrão à esquerda no desktop, zera no mobile
+  header .brand {
+    margin-left: 0 !important;
+  } */
+
+
+  /* garante que o logo não “puxe” pro lado
+  .brand img,
+  .logo {
+    margin: 0;
+    display: block;
+    
+  } */
+   
+}
+
+    /* lado direito (painéis) */
+    .panel{
+      background:linear-gradient(180deg,#111114, #0f0f13);
+      border:1px solid var(--border); border-radius: var(--radius);
+      padding:22px; box-shadow: 0 12px 40px rgba(0,0,0,.35);
+    }
+    .panel h2{margin:0 0 16px; font-size:16px; letter-spacing:.1em; color:#cbd5e1}
+    .row{display:flex; gap:14px; align-items:center}
+    .field{
+      flex:1; background:var(--panel); border:1px solid var(--border); border-radius:12px;
+      padding:10px 14px;
+    }
+    .field label{display:block; font-size:12px; color:#9aa0aa; letter-spacing:.08em; margin-bottom:6px}
+    .input{
+      width:100%; background:transparent; border:0; outline:0; color:#fff;
+      font-variant-numeric: tabular-nums; font-size:26px; font-weight:800;
+    }
+    .switch{
+      margin-top:18px; display:flex; align-items:center; gap:10px; user-select:none; cursor:pointer;
+      color:#cbd5e1; font-size:14px;
+    }
+    .switch input{appearance:none; width:42px; height:26px; background:#262630; border-radius:14px; position:relative; outline:0; transition:.2s}
+    .switch input:checked{background:#a78bfa}
+    .switch input:before{
+      content:""; position:absolute; inset:4px auto 4px 4px; width:18px; border-radius:10px; background:#fff; transition:.2s
+    }
+    .switch input:checked:before{ left:20px; }
+
+    .actions{margin-top:18px}
+    .btn{
+      width:100%; height:56px; border-radius:12px; border:1px solid #2c2a33;
+      background:var(--btn); color:#fff; font-size:16px; font-weight:800; letter-spacing:.06em;
+      display:flex; align-items:center; justify-content:center; gap:10px; cursor:pointer;
+      transition:.15s;
+    }
+    .btn:hover{ background:var(--btn-hover) }
+    .btn svg{ width:18px; height:18px; opacity:.9 }
+
+    .hint{ color:#fca5a5; font-size:13px; margin-top:10px; display:none }
+    .hint.show{ display:block }
+
+    /* ===== Resultado ===== */
+    .resultHead{
+      text-align:center; margin-bottom:18px;
+    }
+    .resultTitle{ letter-spacing:.14em; font-size:14px; color:#cbd5e1; margin:0 0 4px }
+    .resultSub{ font-size:12px; color:#9aa0aa; margin:0 }
+    .numbers{
+      display:flex; gap:22px; flex-wrap:wrap; justify-content:center; margin:18px 0 22px;
+    }
+    .num{
+      font-size: clamp(44px, 6vw, 64px);
+      font-weight:900; color:var(--accent);
+      text-shadow: 0 0 0 rgba(0,0,0,0);
+      letter-spacing:.04em;
+    }
+    .resultActions{ display:grid; gap:10px }
+    .link{
+      text-align:center; color:#cbd5e1; font-size:14px; text-decoration:underline; cursor:pointer;
+      opacity:.9;
+    }
+    .link:hover{ opacity:1 }
+
+    /* estado / animações simples */
+    .hidden{ display:none }
+    .fade-in{ animation:fade .25s ease both }
+    @keyframes fade { from{opacity:0; transform: translateY(6px)} to{opacity:1; transform:none} }
+
+    /* ===== Responsivo ===== */
+    @media (max-width: 960px){
+      .shell{ grid-template-columns:1fr; gap:22px }
+      .hero h1{ margin-top:10px }
+    }
+
+  </style>
+</head>
+<body>
+  
+  <main class="shell">
+    <header>
+      <img 
+      class="logo-dot"
+      src="imagem/logo.svg"
+      width="28"
+      height="28"
+      alt=""
+      aria-hidden="true"
+      />
+      <div class="brand">NUMBERS</div>
+    </header>
+
+    <!-- Lado Esquerdo -->
+    <section class="hero">
+      <div class="tagline">ONLINE — GRATUITO</div>
+      <h1 >SORTEADOR DE NÚMEROS</h1>
+
+
+      <!-- <div class="faq">
+        <div>
+          <h3>Como funciona o sorteador de números?</h3>
+          <p>Ele usa um algoritmo de geração aleatória para criar números dentro do intervalo que você definir.</p>
+        </div>
+        <div>
+          <h3>Posso escolher o intervalo dos números?</h3>
+          <p>Sim, você define os valores mínimo e máximo e também a quantidade.</p>
+        </div>
+      </div> -->
+
+      <!-- FAQ -->
+    <div class="faq">
+      <div class="faq__item">
+        <img
+          class="faq__icon"
+          src="imagem/Frame.svg"
+          width="28"
+          height="28"
+          alt=""
+          aria-hidden="true"
+        />
+        <div class="faq__content">
+          <h3>Como funciona o sorteador de números?</h3>
+          <p>Ele usa um algoritmo de geração aleatória para criar números dentro do intervalo que você definir.</p>
+        </div>
+      </div>
+
+      <div class="faq__item">
+        <img
+          class="faq__icon"
+          src="imagem/Frame.svg"
+          width="28"
+          height="28"
+          alt=""
+          aria-hidden="true"
+        />
+        <div class="faq__content">
+          <h3>Posso escolher o intervalo dos números?</h3>
+          <p>Sim, você define os valores mínimo e máximo e também a quantidade.</p>
+        </div>
+      </div>
+    </div>
+      
+    </section>
+
+    <!-- Painel: Formulário -->
+    <aside id="formPanel" class="panel fade-in" aria-live="polite">
+      <div class="legend">QUERO SORTEAR:</div>
+        <p class="helper">Defina a quantidade e o intervalo; clique em “Sortear” e veja os resultados abaixo.</p>
+
+      <div class="row" style="margin-bottom:10px">
+        <div class="field">
+          <label>NÚMEROS</label>
+          <input id="qtd" class="input" type="number" value="2" min="1" />
+        </div>
+        <div class="field">
+          <label>DE</label>
+          <input id="min" class="input" type="number" value="1" />
+        </div>
+        <div class="field">
+          <label>DE</label>
+          <input id="max" class="input" type="number" value="100" />
+        </div>
+      </div>
+
+      <label class="switch">
+        <input id="noRepeat" type="checkbox" checked />
+        <span>Não repetir número</span>
+      </label>
+
+      <div class="actions">
+        <button id="btnSortear" class="btn">
+          <svg viewBox="0 0 24 24" fill="none">
+            <path d="M4 12a8 8 0 0 1 13.657-5.657L20 8" stroke="#fff" stroke-width="1.8" stroke-linecap="round"/>
+            <path d="M20 12a8 8 0 0 1-13.657 5.657L4 16" stroke="#fff" stroke-width="1.8" stroke-linecap="round"/>
+          </svg>
+          SORTEAR
+        </button>
+        <div id="hint" class="hint">Verifique os valores. Com “não repetir”, a quantidade não pode exceder o tamanho do intervalo.</div>
+      </div>
+    </aside>
+
+    <!-- Painel: Resultado -->
+    <aside id="resultPanel" class="panel hidden" aria-live="polite">
+      <div class="resultHead">
+        <p class="resultTitle">RESULTADO DO SORTEIO</p>
+        <p class="resultSub"><strong>1º</strong>&nbsp; RESULTADO</p>
+      </div>
+
+      <div id="numbers" class="numbers"></div>
+
+      <div class="resultActions">
+        <button id="btnAgain" class="btn">
+          <svg viewBox="0 0 24 24" fill="none">
+            <path d="M4 12a8 8 0 0 1 13.657-5.657L20 8" stroke="#fff" stroke-width="1.8" stroke-linecap="round"/>
+            <path d="M20 12a8 8 0 0 1-13.657 5.657L4 16" stroke="#fff" stroke-width="1.8" stroke-linecap="round"/>
+          </svg>
+          SORTEAR NOVAMENTE
+        </button>
+        <span id="linkBack" class="link">Alterar parâmetros</span>
+      </div>
+    </aside>
+  </main>
+
+  <script>
+    // util: inteiro aleatório inclusivo
+    function randInt(min, max){ return Math.floor(Math.random() * (max - min + 1)) + min }
+
+    // util: amostra sem repetição usando Fisher–Yates
+    function sampleUnique(min, max, k){
+      const n = max - min + 1;
+      if (k > n) throw new Error('sample too large');
+      const arr = Array.from({length:n}, (_,i)=> i + min);
+      for (let i = n - 1; i > 0; i--){
+        const j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+      }
+      return arr.slice(0, k).sort((a,b)=>b-a); // ordem decrescente para ficar elegante
+    }
+
+    // estado
+    const els = {
+      qtd: document.getElementById('qtd'),
+      min: document.getElementById('min'),
+      max: document.getElementById('max'),
+      noRepeat: document.getElementById('noRepeat'),
+      form: document.getElementById('formPanel'),
+      result: document.getElementById('resultPanel'),
+      numbers: document.getElementById('numbers'),
+      hint: document.getElementById('hint'),
+      btnSortear: document.getElementById('btnSortear'),
+      btnAgain: document.getElementById('btnAgain'),
+      linkBack: document.getElementById('linkBack')
+    };
+
+    let lastParams = null; // para “sortear novamente”
+
+    function showForm(){
+      els.result.classList.add('hidden');
+      els.form.classList.remove('hidden');
+      els.form.classList.add('fade-in');
+    }
+    function showResult(){
+      els.form.classList.add('hidden');
+      els.result.classList.remove('hidden');
+      els.result.classList.add('fade-in');
+    }
+
+    function renderNumbers(nums){
+      els.numbers.innerHTML = '';
+      nums.forEach(n=>{
+        const span = document.createElement('span');
+        span.className = 'num';
+        span.textContent = n.toString();
+        els.numbers.appendChild(span);
+      });
+    }
+
+    function validate(qtd, min, max, noRepeat){
+      if (!Number.isFinite(qtd) || !Number.isFinite(min) || !Number.isFinite(max)) return false;
+      if (qtd < 1) return false;
+      if (min > max) return false;
+      if (noRepeat && qtd > (max - min + 1)) return false;
+      return true;
+    }
+
+    function sortear(params){
+      const { qtd, min, max, noRepeat } = params;
+      let nums = [];
+      if (noRepeat){
+        nums = sampleUnique(min, max, qtd);
+      } else {
+        for(let i=0;i<qtd;i++) nums.push(randInt(min, max));
+        nums.sort((a,b)=>b-a);
+      }
+      renderNumbers(nums);
+      showResult();
+    }
+
+    els.btnSortear.addEventListener('click', ()=>{
+      const qtd = parseInt(els.qtd.value,10);
+      const min = parseInt(els.min.value,10);
+      const max = parseInt(els.max.value,10);
+      const noRepeat = els.noRepeat.checked;
+
+      const ok = validate(qtd, min, max, noRepeat);
+      els.hint.classList.toggle('show', !ok);
+      if (!ok) return;
+
+      lastParams = { qtd, min, max, noRepeat };
+      sortear(lastParams);
+    });
+
+    els.btnAgain.addEventListener('click', ()=>{
+      if (lastParams) sortear(lastParams);
+    });
+
+    els.linkBack.addEventListener('click', showForm);
+  </script>
+</body>
+</html>

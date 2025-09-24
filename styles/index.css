@@ -1,0 +1,305 @@
+:root{
+      --bg:#0b0b0d;
+      --panel:#141419;
+      --muted:#9ca3af;
+      --text:#f4f4f5;
+      --accent:#a78bfa;
+      --accent-2:#8b5cf6;
+      --border:#24242c;
+      --btn:#24222b;
+      --btn-hover:#8b5cf6;
+      --radius:14px;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0; 
+      font-family:Inter,system-ui,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
+      color:var(--text); 
+      background:var(--bg);
+      -webkit-font-smoothing:antialiased; 
+      -moz-osx-font-smoothing:grayscale;
+    }
+
+    /* ===== Layout com grid areas ===== */
+    header { 
+      grid-area: header; 
+    }
+    .hero-head  { grid-area: heroHead; margin-left: 25px; }
+    .faq        { grid-area: heroFaq; }
+    /* #formPanel  { grid-area: form; }
+    #resultPanel{ grid-area: result; } */
+    #formPanel  { grid-area: form; }
+    #resultPanel{ grid-area: form; }   /* <-- mudou */
+
+    .shell{
+      max-width:1280px; 
+      margin-inline:auto; 
+      padding:28px clamp(16px,4vw,40px);
+      display:grid; gap:48px;
+      /* grid-template-columns: 1.2fr 1fr;
+      grid-template-areas:
+        "header header"
+        "heroHead form"
+        "heroFaq  form"
+        "heroFaq  result"; */
+         grid-template-columns: 1.2fr 1fr;
+          grid-template-areas:
+            "header header"
+            "heroHead form"
+            "heroFaq  form";  
+    }
+
+    header{
+      display:flex; 
+      align-items:center; 
+      gap:12px;
+      margin-top:44px; 
+      font-weight:700; 
+      opacity:.95; 
+      margin-left: 15px;
+    }
+    .logo-dot{
+      width:28px;
+      height:28px;
+      border-radius:50%; 
+      position:relative
+    }
+    .logo-dot:before,.logo-dot:after{
+      content:""; 
+      position:absolute; 
+      inset:8px; 
+      border-radius:50%; 
+      border:2px solid #fff; 
+      opacity:.8
+    }
+    .brand{font-size:22px}
+    .legend{
+      font-size: 25px;
+    }
+    .helper{
+      font-size: 20px;
+      margin-top: 5px;
+    }
+
+    .hero-head h1{
+      font-size:clamp(38px,6.8vw,86px);
+      line-height:.95; margin:28px 0 6px;
+      font-weight:900; letter-spacing:.6px;
+    }
+    .tagline{ 
+      color:#cbd5e1; 
+      font-size:14px; 
+      letter-spacing:.12em 
+    }
+
+    .faq{ 
+      display:grid; 
+      gap:36px; 
+      margin-top:40px; 
+    }
+    .faq__item{ 
+      display:flex; 
+      align-items:flex-start; 
+      gap:16px; 
+    }
+    .faq__icon{ 
+      width:34px; 
+      flex:0 0 34px; 
+      margin-top:8px; 
+    }
+    .faq__content h3{ 
+      color:#c084fc; 
+      font-size:20px; 
+      margin:0 0 6px; 
+    }
+    .faq__content p{ 
+      margin:0; 
+      color:#e5e5e5; 
+      font-size:16px; 
+      line-height:1.65; 
+    }
+
+    /* ===== Painéis ===== */
+    .panel{
+      /* background:linear-gradient(180deg,#111114,#0f0f13); */
+       border-radius:var(--radius);
+      padding:22px; 
+    }
+    .row{
+      display:flex; 
+      gap:14px; 
+      align-items:center
+    }
+    .field{
+      flex:1; 
+      background:#141419; 
+      border:1px solid var(--border); 
+      border-radius:12px; 
+      padding:10px 14px;
+    }
+    .field label{
+      display:block; 
+      font-size:12px; 
+      color:#9aa0aa; 
+      letter-spacing:.08em; 
+      margin-bottom:6px
+    }
+    .input{
+      width:100%; 
+      background:transparent; 
+      border:0; 
+      outline:0; 
+      color:#fff; 
+      font-variant-numeric:tabular-nums; 
+      font-size:26px; 
+      font-weight:800;
+    }
+    .switch{ 
+      margin-top:18px; 
+      display:flex; 
+      align-items:center; 
+      gap:10px; 
+      color:#cbd5e1; 
+      font-size:14px; 
+    }
+    .switch input{
+      appearance:none; 
+      width:42px; 
+      height:26px; 
+      background:#262630; 
+      border-radius:14px; 
+      position:relative; 
+      outline:0; 
+      transition:.2s
+    }
+    .switch input:checked{
+      background:#a78bfa
+    }
+    .switch input:before{ 
+      content:""; 
+      position:absolute; 
+      inset:4px auto 4px 4px; 
+      width:18px; 
+      border-radius:10px; 
+      background:#fff; 
+      transition:.2s 
+    }
+    .switch input:checked:before{ 
+      left:20px; 
+    }
+
+    .actions{
+      margin-top:18px
+    }
+    .btn{
+      width:100%; 
+      height:56px; 
+      border-radius:5px; 
+      border:1px solid #2c2a33;
+      background:var(--btn); 
+      color:#fff; 
+      font-size:16px; 
+      font-weight:800;
+      display:flex; 
+      align-items:center; 
+      justify-content:center; 
+      cursor:pointer; 
+      margin-top: 40px;
+    }
+    .btn:hover{ 
+      background:var(--btn-hover) 
+    }
+
+    /* Resultado */
+    .resultHead{ 
+      text-align:center; 
+      margin-bottom:18px; 
+    }
+    .resultTitle{ 
+      letter-spacing:.14em; 
+      font-size:14px; 
+      color:#cbd5e1; 
+      margin:0 0 4px 
+    }
+    .resultSub{ 
+      font-size:12px; 
+      color:#9aa0aa; 
+      margin:0 
+    }
+    .numbers{
+      display:flex; 
+      flex-wrap:wrap; 
+      gap:22px; 
+      justify-content:center; 
+      margin:18px 0 22px;
+    }
+    .num{
+      font-size:clamp(44px,6vw,64px); 
+      font-weight:900; 
+      color:var(--accent)
+    }
+    .resultActions{ 
+      display:grid; 
+      gap:10px 
+    }
+    .link{ 
+      text-align:center; 
+      color:#cbd5e1; 
+      font-size:14px; 
+      text-decoration:underline; 
+      cursor:pointer; 
+      opacity:.9; 
+    }
+    .link:hover{ 
+      opacity:1 
+    }
+
+    /* estado / animação */
+    .hidden{ 
+      display:none 
+    }
+    .fade-in{ 
+      animation:fade .25s ease both 
+    }
+    @keyframes fade { from{opacity:0; transform: translateY(6px)} to{opacity:1; transform:none} }
+
+    /* ===== Responsivo ===== */
+    @media(max-width:1024px){
+     header{
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-bottom: 41px;
+     }
+    }
+
+    @media(max-width:590px){
+     header{
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-bottom: 41px;
+     }
+    .legend{
+      font-size: 18px;
+    }
+    .helper{
+      font-size: 15px;
+      margin-top: 5px;
+    }
+    
+    }
+
+
+    @media(max-width:960px){
+      .shell{
+        grid-template-columns:1fr;
+        gap:22px;
+        grid-template-areas:
+          "header"
+          "heroHead"
+          "form"        
+          "heroFaq";
+      }
+    }
